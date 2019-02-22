@@ -1,0 +1,27 @@
+{% extends 'log_reg_app/base.html' %}
+{% block content%}
+<header class='header'>
+  <nav>
+    <h1>Quote Dash</h1>
+    <ul class='main-nav'>
+      <li><a href='/home'>Back</a></li>
+      <li><a href='/edit'>Edit Account</a></li>
+      <li><a href='/logout'>Log Out</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="user-container">
+  <h1>{{user.first_name}} {{user.last_name}}'s Quotes:</h1>
+  <div class="quotes">
+    {% if user_quotes %}
+      {% for quote in user_quotes %}
+          <div class="user-box">
+            <p><span>{{quote.author}}</span>: "{{quote.quote}}"</p>
+          </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

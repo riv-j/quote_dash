@@ -1,0 +1,53 @@
+{% extends 'log_reg_app/base.html' %}
+{% block content%}
+<header class='header'>
+  <nav>
+    <h1>Quote Dash</h1>
+    <ul class='main-nav'>
+      <li>Welcome</li>
+    </ul>
+  </nav>
+</header>
+
+<div class="main container">
+  <div class="left">
+    <h1>Resgistration</h1>
+    <div class="form-group">
+      <form action="/register" method='POST'>
+        {% csrf_token %}
+        <p>First Name: <input class='form-control' type="text" name="fname" value='{{errors.fname}}'></p>
+        <p>Last Name: <input class='form-control' type="text" name="lname"></p>
+        <p>Email: <input class='form-control' type="email" name="email"></p>
+        <p>Password:<input class='form-control' type="password" name="password"></p>
+        <p>Confirm Password: <input class='form-control' type="password" name="cpassword"></p>
+        <input class='btn' type="submit" value="Register">
+      </form>
+    </div>
+  </div>
+
+  <div class="right">
+    <h1>Log In</h1>
+    <div class="form-group">
+      <form action="login" method='POST'>
+        {% csrf_token %}
+        <p>Email: <input class='form-control' type="email" name="email"></p>
+        <p>Password: <input class='form-control' type="password" name="password"></p>
+        <input class='btn' type="submit" value="Log In">
+      </form>
+    </div>
+
+    <div class="error-messages">
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li style='text-align: left; margin-left: 20px;'>
+          {{message}}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}

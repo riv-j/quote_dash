@@ -1,0 +1,80 @@
+{% extends 'log_reg_app/base.html' %}
+
+{% block content %}
+
+<header class='header'>
+  <nav>
+    <h1>Welcome, {{current_user.first_name}}!  </h1>
+    <ul class='main-nav'>
+      <li><a href='/home'>Home</a></li>
+      <li><a href='/edit'>Edit Account</a></li>
+      <li><a href='/logout'>Log Out</a></li>
+    </ul>
+  </nav>
+</header>
+<div class="quote-container">
+  <div class="left-quotes">
+    {% if all_quotes %}  
+    <h3>Quotes</h3>
+      {% for quote in all_quotes %}
+        <div class="quotes">
+          <div class="quote-box">
+
+            <p><span>{{quote.author}}</span>: "{{quote.quote}}"</p>
+              {% if quote.users.id == current_user.id %}
+              <form action="/delete" method='POST' class='delete'>
+                {% csrf_token %}
+                <input type="hidden" name="quote_id" value='{{quote.id}}'>
+                <input class='btn' type="submit" value="Delete"></p>
+              </form>
+              {% endif %}
+
+            <div class="row">
+              <p>Posted by </p>
+              <form action="/user" method='POST'>
+                {% csrf_token %}
+                <input type="hidden" name='this_id' value='{{quote.users.id}}'>
+                <input class='posted_user' type="submit" value="{{quote.users.first_name}} {{quote.users.last_name}}">
+              </form>
+            </div>
+
+            <form action="/like" method='POST'>
+              {% csrf_token %}
+              <div class="row">
+                <input type="hidden" name="quote_id" value='{{quote.id}}'>
+                <p>{% if quote.likes == 1 %} {{quote.likes}} person likes this{% else %}{{quote.likes}} people like this{% endif %}</p>
+                <input class='btn' type="submit" value="Like">
+              </div>
+            </form>
+
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="right-add">
+
+    <h2>Add a Quote!</h2>
+    <form action="add-quote" method='POST'>
+      {% csrf_token %}
+      <p>Author: <input class='form-control' type="text" name='author'></p>
+      <p>Quote: <input class='form-control' type="text" name='quote'></p>
+      <input class='btn' type="submit" value="Submit">
+    </form>
+
+    <div class="error-messages">
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li style='text-align: left; margin-left: 20px;'>
+          {{message}}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

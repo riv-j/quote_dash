@@ -1,0 +1,38 @@
+{% extends 'log_reg_app/base.html' %}
+{% block content%}
+<header class='header'>
+  <nav>
+    <h1>Quote Dash</h1>
+    <ul class='main-nav'>
+      <li><a href='/home'>Back</a></li>
+      <li><a href='/edit'>Edit Account</a></li>
+      <li><a href='/logout'>Log Out</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="user-container">
+  <h1>Edit My Account</h1>
+  <div class="form-group">
+    <form action="/update" method='POST'>
+      {% csrf_token %}
+      <p>First Name: <input class='form-control' type="text" name="fname" placeholder="{{current_user.first_name}}"></p>
+      <p>Last Name: <input class='form-control' type="text" name="lname" placeholder="{{current_user.last_name}}"></p>
+      <p>Email: <input class='form-control' type="email" name="email" placeholder="{{current_user.email}}"></p>
+      <input class='btn' type="submit" value="Update">
+    </form>
+  </div>
+  <div class="error-messages">
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li style='text-align: left; margin-left: 20px;'>
+        {{message}}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
